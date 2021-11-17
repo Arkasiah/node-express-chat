@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion chat</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="normalize.css">
+</head>
+
+<body>
+    <form name="co">
+        <div class="min-h-screen bg-gray-100 text-gray-800 antialiased px-4 py-6 flex flex-col justify-center sm:py-12">
+            <div class="relative py-3 sm:max-w-xl mx-auto text-center">
+                <span class="text-2xl font-light">Se connecter</span>
+                <div class="relative mt-4 bg-white shadow-md sm:rounded-lg text-left">
+                    <div class="h-2 bg-indigo-400 rounded-t-md"></div>
+                    <div class="py-6 px-8">
+                        <label class="block font-semibold">Pseudo<label>
+                                <input type="text" id="name" placeholder="Pseudo"
+                                    class=" border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-indigo-600 rounded-md">
+                                <!-- <label class="block mt-3 font-semibold">Mot de passe<label>
+                                        <input type="password" placeholder="Password"
+                                            class=" border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-indigo-600 rounded-md">
+                                        <div class="flex justify-between items-baseline"> -->
+                                            <button type="button"
+                                                class="mt-4 bg-indigo-500 text-white py-2 px-6 rounded-lg"
+                                                id="connexion">Connexion</button>
+                                            <!-- <a href="#" class="text-sm hover:underline">Pas encore de compte ?</a> -->
+                                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
+<script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+    integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+    crossorigin="anonymous"></script>
+<script>
+    const socket = io('http://localhost:3000');
+
+    let name = document.getElementById('name');
+    let connexion = document.getElementById('connexion');
+
+
+    connexion.addEventListener('click', function () {
+        // window.location.href = "http://127.0.0.1:5500/front-end/index.html";
+        console.log('yy');
+        socket.emit('addUser',name.value);
+    //    socket.emit('redirect');
+    })
+
+    socket.on('nbUser',function(count){
+        console.log(count);
+    })
+
+    socket.on("getRed",function(test){
+        socket.userName = test[1];
+        window.location.href = test[0];
+    })
+
+        // // https://gist.github.com/gordonbrander/2230317
+        // const ID = function () {
+        // // Math.random should be unique because of its seeding algorithm.
+        // // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+        // // after the decimal.
+        // return '_' + Math.random().toString(36).substr(2, 9);
+        // };
+
+        // let userid = '';
+
+        // if(localStorage.getItem('userid')){
+        //     userid = localStorage.getItem('userid');
+        // } else {
+        //     const id = ID();
+        //     localStorage.setItem('userid', id)
+        //     userid = id;
+        // }
+
+        // const socket = io('http://localhost:3000');
+
+        // let connexion = document.getElementById('connexion');
+        // let nom = document.getElementById('name');
+
+        // circle.addEventListener('click', handleCookieClick)
+
+        // function handleCookieClick(){
+        //     socket.emit('plus-one', userid);
+        // }
+
+        // socket.on('notif', function(msg){
+        //     console.log('Nouvelle notification: ', msg);
+        // }) 
+
+        // socket.on('plus-one', function(nb){
+        //     number.innerText = nb;
+        // })
+
+</script>
