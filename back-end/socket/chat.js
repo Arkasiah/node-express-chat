@@ -68,8 +68,24 @@ module.exports = function (io) {
         io.emit('receiveAllData', data);
       })
     })
-    // socket.on('getOwnMsg',()=>{
-    //   mUser.aggregate()
-    // })
+    socket.on('getOwnMsg', () => {
+      mUser.aggregate(
+        [
+          {
+            $group: {
+              _id: "$pseudo",
+              count: { $sum: 1 }
+            }
+          }
+        ],
+        function (err, result) {
+          if (err) {
+            res.send(err);
+          } else {
+            socket.emit('receiveOwnMsg',result);
+            console.log(result)
+          }
+        })
+    })
   })
 }
