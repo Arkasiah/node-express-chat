@@ -62,8 +62,9 @@
 				</div>
 			</div>
 			<div class="chat-area">
+				<div class="title"><b id="mesMsg"></b><i class="fa fa-search"></i></div>
 				<div class="title"><b id="tousMsg">Conversation title </b><i class="fa fa-search"></i></div>
-				<div class="title"><b id="mesMsg">test</b></div>
+
 				<div class="chat-list">
 					<ul id="chat-area">
 					</ul>
@@ -149,25 +150,24 @@
 
 		data.forEach(elem => allMessage.push(elem));
 		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML = "")
-		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML += " <li class=\"me\"><div class=\"name\"><span class=\"\">" + elem.pseudo + "</span></div><div class=\"message\"><p>" + elem.message + "</p><span class=\"msg-time\">5:00 pm</span></div></li>"
+		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML += " <li class=\"me\"><div class=\"name\"><span class=\"\">" + elem.pseudo + "</span></div><div class=\"message\"><p>" + elem.message + "</p><span class=\"msg-time\">"+elem.timestamp.substr(0,10)+"</span></div></li>"
 		)
 		document.getElementById('tousMsg').innerHTML = "Conversation : Total message : " + allMessage.length;
+		socket.emit('getOwnMsg');
 
 	});
 
 	socket.on('newMessage', (listMessage) => {
 		allMessage.push(listMessage);
 		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML = "");
-		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML += " <li class=\"me\"><div class=\"name\"><span class=\"\">" + elem.pseudo + "</span></div><div class=\"message\"><p>" + elem.message + "</p><span class=\"msg-time\">5:00 pm</span></div></li>");
+		allMessage.forEach(elem => document.getElementById('chat-area').innerHTML += " <li class=\"me\"><div class=\"name\"><span class=\"\">" + elem.pseudo + "</span></div><div class=\"message\"><p>" + elem.message + "</p><span class=\"msg-time\">"+elem.timestamp.substr(0,10)+"</span></div></li>");
 		socket.emit('getOwnMsg');
 	})
 
 	socket.on('receiveOwnMsg', (myData) => {
-		document.getElementById("mesMsg").innerHTML = "Mon total de message : " + myData[0].count
-
 		for (var i = 0; i < myData.length; i++) {
 			if (myData[i]._id === socket.nameUser) {
-				document.getElementById("mesMsg").innerHTML = "Mon total de message : " + myData.count
+				document.getElementById("mesMsg").innerHTML = "Mon total de message : " + myData[i].count
 			}
 		}
 	})
